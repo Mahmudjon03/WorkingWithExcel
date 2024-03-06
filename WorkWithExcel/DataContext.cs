@@ -12,12 +12,12 @@ namespace WorkWithExcel
         }      
         protected virtual SqlObjects? Exec(string sql, SqlParameter[] sqlParam, TypeReturn typeReturn, TypeCommand typeCommand)
         {
-            SqlConnection sqlConnection = new SqlConnection("server=192.168.0.6;database=PayTest;user id=APayTest;password=PayTest2024;multipleactiveresultsets=true;");
+            SqlConnection sqlConnection = new SqlConnection("server=192.168.0.6;database=PayNewTest;user id=APayNewTest;password=Paynewtest2024;multipleactiveresultsets=true;");
             sqlConnection.Open();
 
             SqlCommand sqlCommand = new SqlCommand(sql, sqlConnection);
 
-            if (typeCommand == TypeCommand.SqlQuery)
+            if (typeCommand == TypeCommand.SqlQuery)   
             {
                 sqlCommand.CommandType = CommandType.Text;
             }

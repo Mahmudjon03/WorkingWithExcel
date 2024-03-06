@@ -3,9 +3,10 @@
     public class ExcelData
     {
         public int RowNumber { get; set; }
-        public string merchat { get; set; }
-        public decimal amnt { get; set; }
-        public decimal reward { get; set; }
-        public  decimal cnt { get; set; }
+        public string MerchantName { get; set; }
+        public decimal Amnt { get; set; }
+        public decimal Reward { get; set; }
+        public decimal CreditAmount { get; set; }
+        public  decimal Cnt { get; set; }
     }
 }
