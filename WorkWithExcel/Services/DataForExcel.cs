@@ -13,9 +13,9 @@ namespace WorkWithExcel.Services
             string sql = "select " +
                 "ROW_NUMBER() OVER (ORDER BY m.id) AS RowNumber, " +
                 " m.Name as MerchantName " +
-                ",ROUND(CAST(sum(o.total_amount)AS NUMERIC(19, 4)), 4) as Amnt" +
-                ",ROUND(CAST(sum((1.5*(o.total_amount))/100) AS NUMERIC(19, 4)), 4) as Reward" +
-                ",ROUND(CAST(sum((o.total_amount - (1.5*(o.total_amount))/100)) AS NUMERIC(19, 4)), 4) as CreditAmount" +
+                ",ROUND(CAST(sum(o.total_amount)AS NUMERIC(19, 2)), 4) as Amnt" +
+                ",ROUND(CAST(sum((1.5*(o.total_amount))/100) AS NUMERIC(19, 2)), 4) as Reward" +
+                ",ROUND(CAST(sum((o.total_amount - (1.5*(o.total_amount))/100)) AS NUMERIC(19, 2)), 4) as CreditAmount" +
                 ",count(o.id) as Cnt" +
                 " from operations o   " +
                 "inner join operation_params op " +
@@ -75,18 +75,19 @@ namespace WorkWithExcel.Services
                 new SqlParameter("@toDate",toDate)
             };
             var result = new List<ExcelDateDto>();
-            using (var sqlObject = Exec(sql, pr, TypeReturn.DataTable, TypeCommand.SqlQuery))
+            using (var sqlObject = Exec(sql, pr, TypeReturn.DataTable, TypeCommand.SqlQuery)!)
             {
-                var dataTable = sqlObject.DataTable;
+                var dataTable = sqlObject.DataTable!;
                 if (dataTable.Rows.Count != 0)
                 {
                     result = (from DataRow dataRow in dataTable.Rows
+                             
                               select new ExcelDateDto()
                               {
                                   RowNumber = (int)(long)dataRow["RowNumber"],
                                   OrderNumber = dataRow["Номер заказа"].ToString(),
                                   MerchantName = dataRow["Нименование мерчанта"].ToString(),
-                                  Sum = (decimal)dataRow["Сумма"],
+                                  Sum = Convert.ToDecimal(dataRow["Сумма"]),
                                   Date = dataRow["Дата"].ToString(),
                                   panCard = dataRow["ПАН-карты"].ToString()
                               }
